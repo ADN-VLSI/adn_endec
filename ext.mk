@@ -1,0 +1,2 @@
+export ADN_ENDEC=$(CURDIR)
+export REPO_NAME_EXP=ADN_ENDEC
