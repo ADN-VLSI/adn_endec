@@ -70,6 +70,7 @@ clean_full:
 $(REPO_ROOT)/reuse.f:
 	@echo -e "\033[1;33m#\033[0m Generating Source Filelist"
 	@echo "-i $(REPO_ROOT)/include" > $(REPO_ROOT)/reuse.f
+	@((cat $$(find $(REPO_ROOT)/submodule -mindepth 2 -maxdepth 2 -name "reuse.f") || true) | grep -E "^-i " ) >> $(REPO_ROOT)/reuse.f
 	@echo "ADD INTERFACE FILES"
 	@find $(REPO_ROOT)/source -maxdepth 1 -name "*.sv" >> $(REPO_ROOT)/reuse.f
 	@sed -i 's|$(REPO_ROOT)|$$\{$(REPO_NAME_EXP)\}|g' $(REPO_ROOT)/reuse.f
@@ -99,17 +100,37 @@ all:
 	@make -s $(REPO_ROOT)/reuse.f
 	@make -s $(REPO_ROOT)/local.f
 	@make -s $(BUILD_DIR)/XSIM_ARGS GUI=$(GUI) TN=$(TN) TC=$(TC) VCD=$(VCD) DEBUG=$(DEBUG)
+######################### COMPILE #########################
+	@make -s compile_all_submodules
 	@echo -e "\033[1;33m#\033[0m Compiling $(REPO_ROOT)"
 	@cd $(BUILD_DIR) && $(XVLOG) -sv -f $(REPO_ROOT)/reuse.f -f $(REPO_ROOT)/local.f -log $(LOG_DIR)/xvlog_$(shell date +%Y%m%d_%H%M%S).log $(O_EW)
-# TODO: Add Submodule compilation
+######################## ELABORATE ########################
 	@echo -e "\033[1;33m#\033[0m Elaborating $(TOP)"
 	@cd $(BUILD_DIR) && $(XELAB) $(TOP) -s snap_$(TOP) -debug all -log $(LOG_DIR)/xelab_$(TOP)_$(shell date +%Y%m%d_%H%M%S).log $(O_EW)
+	@echo "" > $(BUILD_DIR)/xelab_$(TOP)
+######################### SIMULATE ########################
 	@echo -e "\033[1;33m#\033[0m Simulating TOP:$(TOP) Test:$(TN) Count:$(TC)"
 	@cd $(BUILD_DIR) && $(XSIM) snap_$(TOP) -f $(BUILD_DIR)/XSIM_ARGS -log $(LOG_DIR)/xsim_$(TOP)_$(shell date +%Y%m%d_%H%M%S).log $(H_EW)
 ifneq ($(VCD), 0)
 	@echo -e "\033[1;33m#\033[0m Loading VCD waveform file"
 	@gtkwave $(REPO_ROOT)/wcfg/$(TOP).gtkw || gtkwave $(BUILD_DIR)/$(TOP).vcd
 endif
+
+.PHONY: compile_submodule
+compile_submodule: 
+	@make -s $(BUILD_DIR)
+	@make -s $(LOG_DIR)
+	@touch $(BUILD_DIR)/$(SUB)_commit
+	@if [ "$(shell git submodule status $(REPO_ROOT)/submodule/$(SUB) | awk '{print $$1}')" \
+	  != "$(file $(BUILD_DIR)/$(SUB)_commit)" ]; then \
+		echo -e "\033[1;33m#\033[0m Submodule $(SUB) commit has changed, recompiling..."; \
+		echo -n $(shell git submodule status $(REPO_ROOT)/submodule/$(SUB) | awk '{print $$1}') > $(BUILD_DIR)/$(SUB)_commit; \
+		cd $(BUILD_DIR) && $(XVLOG) -sv -f $(REPO_ROOT)/submodule/$(SUB)/reuse.f -log $(LOG_DIR)/xvlog_$(SUB)_$(shell date +%Y%m%d_%H%M%S).log $(O_EW); \
+		git submodule status $(REPO_ROOT)/submodule/$(SUB) | awk '{print $$1}' > $(BUILD_DIR)/$(SUB)_commit; \
+		rm -f $(BUILD_DIR)/xelab_*; \
+	else \
+		echo -e "\033[1;33m#\033[0m Submodule $(SUB) commit has not changed, skipping compilation."; \
+	fi
 
 ####################################################################################################
 # UPDATE DOC LIST
