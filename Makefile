@@ -245,7 +245,5 @@ gen_testbench:
 		sed -i "s|__YEAR__ squared-studio|$$(date +%Y) ADN Semiconductors|g" $(REPO_ROOT)/testbench/$(TOP).sv; \
 		sed -i "s|testbench_model|$(TOP)|g" $(REPO_ROOT)/testbench/$(TOP).sv; \
 		sed -i "s|tb_ess.sv|adn_common_tb_headers.sv|g" $(REPO_ROOT)/testbench/$(TOP).sv; \
-		sed -i "s|CASE_NOTE(1, \"This is a PASS\");|note_case(1); // CASE PASSED|g" $(REPO_ROOT)/testbench/$(TOP).sv; \
-		sed -i "s|CASE_NOTE(0, \"And this is a FAIL\");|note_case(0); // CASE FAILED|g" $(REPO_ROOT)/testbench/$(TOP).sv; \
 	fi
 	@code $(REPO_ROOT)/testbench/$(TOP).sv
