@@ -4,6 +4,7 @@ module adn_endec_hello;
 
   initial begin
     $display("Hello, ADN!");
+    note_case(1);
     $finish;
   end
 
