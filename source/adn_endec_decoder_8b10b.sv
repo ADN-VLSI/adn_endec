@@ -1,8 +1,8 @@
 /*
 
-@foez---bhai, write the purpose of this module in markdown format here. This is already in multi-line comment, so don't add any additional comment syntax.
+@foez-bhai, write the purpose of this module in markdown format here. This is already in multi-line comment, so don't add any additional comment syntax.
 
-@foez---bhai, describe the usage of this module in markdown format here. This is already in multi-line comment, so don't add any additional comment syntax.
+@foez-bhai, describe the usage of this module in markdown format here. This is already in multi-line comment, so don't add any additional comment syntax.
 
 | REVISION | DATE       | AUTHOR          | DESCRIPTION                                            |
 |----------|------------|-----------------|--------------------------------------------------------|
@@ -16,7 +16,7 @@ See LICENSE file in the project root for full license information
 
 */
 
-// @foez---bhai, add comments to the parameters, ports
+// @foez-bhai, add comments to the parameters, ports
 module adn_endec_decoder_8b10b (
     input  logic [9:0] code_in,
     input  logic       rd_in,
@@ -27,7 +27,7 @@ module adn_endec_decoder_8b10b (
     output logic       disparity_err
 );
 
-  // @foez---bhai, add comments to the functional blocks, signals, and submodules
+  // @foez-bhai, add comments to the functional blocks, signals, and submodules
 
   `include "adn_endec_block_linecode_functions.svh"
 

@@ -1,8 +1,8 @@
 /*
 
-@foez---bhai, write the purpose of this module in markdown format here. This is already in multi-line comment, so don't add any additional comment syntax.
+@foez-bhai, write the purpose of this module in markdown format here. This is already in multi-line comment, so don't add any additional comment syntax.
 
-@foez---bhai, describe the usage of this module in markdown format here. This is already in multi-line comment, so don't add any additional comment syntax.
+@foez-bhai, describe the usage of this module in markdown format here. This is already in multi-line comment, so don't add any additional comment syntax.
 
 | REVISION | DATE       | AUTHOR          | DESCRIPTION                                            |
 |----------|------------|-----------------|--------------------------------------------------------|
@@ -16,7 +16,7 @@ See LICENSE file in the project root for full license information
 
 */
 
-// @foez---bhai, add comments to the parameters, ports
+// @foez-bhai, add comments to the parameters, ports
 module adn_endec_encoder_manchester #(
     parameter integer DATA_W = 8,
     parameter integer INVERT_POLARITY = 0
@@ -25,7 +25,7 @@ module adn_endec_encoder_manchester #(
     output logic [(2*DATA_W)-1:0] code_out
 );
 
-  // @foez---bhai, add comments to the functional blocks, signals, and submodules
+  // @foez-bhai, add comments to the functional blocks, signals, and submodules
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // LOCALPARAMS GENERATED

@@ -1,6 +1,3 @@
-`ifndef __GUARD_ADN_ENDEC_BLOCK_LINECODE_FUNCTIONS_SVH__
-`define __GUARD_ADN_ENDEC_BLOCK_LINECODE_FUNCTIONS_SVH__ 0
-
 function automatic logic is_valid_k(input logic [7:0] data);
   case (data)
     8'h1C, 8'h3C, 8'h5C, 8'h7C, 8'h9C, 8'hBC, 8'hDC, 8'hFC, 8'hF7, 8'hFB, 8'hFD, 8'hFE: return 1'b1;
@@ -290,5 +287,3 @@ task automatic decode_5b4b_symbol(input [4:0] code_in, output valid, output [3:0
     endcase
   end
 endtask
-
-`endif

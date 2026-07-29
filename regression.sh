@@ -54,7 +54,13 @@ echo -e "\033[1G\033[1;32mDone!\033[0m ($time_diff seconds)   \033[21G - \033[1;
 ################################################################################
 
 # ci_simulate tb tn tc 
-ci_simulate adn_endec_hello default 1
+ci_simulate adn_endec_4b5b_tb default 0
+ci_simulate adn_endec_8b10b_tb default 0
+ci_simulate adn_endec_64b66b_tb default 0
+ci_simulate adn_endec_128b130b_tb default 0
+ci_simulate adn_endec_128b132b_tb default 0
+ci_simulate adn_endec_256b257b_tb default 0
+ci_simulate adn_endec_manchester_tb default 0
 
 ################################################################################
 # COLLECT & PRINT
