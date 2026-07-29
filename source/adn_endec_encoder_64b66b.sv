@@ -17,36 +17,33 @@ See LICENSE file in the project root for full license information
 */
 
 // @foez---bhai, add comments to the parameters, ports
-module adn_endec_gray_to_bin #(
-    parameter int WIDTH = 8
-) (
-    input  logic [WIDTH-1:0] gray_i,
-    output logic [WIDTH-1:0] bin_o
+module adn_endec_encoder_64b66b (
+    input  logic [63:0] payload_in,
+    input  logic [ 1:0] sync_header_in,
+    input  logic [57:0] scramble_state_in,
+    output logic [65:0] block_out,
+    output logic [57:0] scramble_state_out,
+    output logic        header_err
 );
 
   // @foez---bhai, add comments to the functional blocks, signals, and submodules
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  // LOCALPARAMS GENERATED
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  // TYPEDEFS
-  //////////////////////////////////////////////////////////////////////////////////////////////////
+  `include "adn_endec_block_linecode_functions.svh"
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
+
+  logic [63:0] scrambled_payload;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // ASSIGNMENTS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   always_comb begin
-    bin_o[WIDTH-1] = gray_i[WIDTH-1];
-    for (int i = WIDTH - 2; i >= 0; i--) begin
-      bin_o[i] = bin_o[i+1] ^ gray_i[i];
-    end
+    scramble_64b66b_payload(payload_in, scramble_state_in, scrambled_payload, scramble_state_out);
+    block_out  = {sync_header_in, scrambled_payload};
+    header_err = !valid_sync_header(sync_header_in);
   end
 
 endmodule
