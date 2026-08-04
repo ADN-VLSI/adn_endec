@@ -17,6 +17,8 @@
 [`adn_endec_encoder_manchester`](document/source/adn_endec_encoder_manchester.md)
 
 ## INTERFACE
+[`dummy_interface`](document/interface/dummy_interface.md)
 
 ## INCLUDE
+[`adn_endec_block_linecode_functions.svh`](document/include/adn_endec_block_linecode_functions.md)
 
