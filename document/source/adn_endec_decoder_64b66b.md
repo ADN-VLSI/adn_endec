@@ -1,25 +1,31 @@
 # adn_endec_decoder_64b66b (module)
 
-### Author : Foez Ahmed (foez.official@gmail.com)
+### Author: Foez Ahmed (foez.official@gmail.com)
 
-## TOP IO
+### Source: adn_endec_decoder_64b66b.sv
+
+## Top IO
+
 <img src="./adn_endec_decoder_64b66b_top.svg">
 
 ## Parameters
-|Name|Type|Dimension|Default Value|Description|
-|-|-|-|-|-|
+
+_None_
+
 
 ## Ports
+
 |Name|Direction|Type|Dimension|Description|
 |-|-|-|-|-|
-|block_in|input|logic [65:0]||66-bit encoded input block|
-|scramble_state_in|input|logic [57:0]||Current 58-bit scrambling state|
-|payload_out|output|logic [63:0]||Decoded 64-bit payload|
-|sync_header_out|output|logic [ 1:0]||Extracted 2-bit sync header|
-|scramble_state_out|output|logic [57:0]||Updated 58-bit scrambling state|
-|header_err|output|logic||High if sync header is invalid|
-## Description
+|block_in|input|logic [65:0]|||
+|scramble_state_in|input|logic [57:0]|||
+|payload_out|output|logic [63:0]|||
+|sync_header_out|output|logic [ 1:0]|||
+|scramble_state_out|output|logic [57:0]|||
+|header_err|output|logic|||
 
+
+## Description
 
 This module implements a 64b/66b decoder designed to process encoded data blocks. It performs synchronization header extraction, payload descrambling using a provided state, and validation of the sync header to detect transmission errors.
 
@@ -36,8 +42,4 @@ The `adn_endec_decoder_64b66b` module is used to decode 66-bit blocks into 64-bi
 |----------|------------|-----------------|--------------------------------------------------------|
 | 1.0      | 2026-07-29 | Foez Ahmed      | Stable release                                         |
 
-This file is part of ADN-VLSI/adn_endec
-<br>**Copyright (c) 2026 ADN Semiconductors**
-<br>**Licensed under the MIT License**
-<br>**See LICENSE file in the project root for full license information**
-
+Author : Foez Ahmed (foez.official@gmail.com)
