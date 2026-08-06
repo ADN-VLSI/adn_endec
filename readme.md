@@ -29,7 +29,6 @@
 [`adn_common_hs_combiner`](https://github.com/ADN-VLSI/adn_common/blob/main/document/source/adn_common_hs_combiner.md)
 [`adn_common_hs_counter`](https://github.com/ADN-VLSI/adn_common/blob/main/document/source/adn_common_hs_counter.md)
 [`adn_common_jk_ff`](https://github.com/ADN-VLSI/adn_common/blob/main/document/source/adn_common_jk_ff.md)
-[`adn_common_parity_generator`](https://github.com/ADN-VLSI/adn_common/blob/main/document/source/adn_common_parity_generator.md)
 [`adn_common_pipeline`](https://github.com/ADN-VLSI/adn_common/blob/main/document/source/adn_common_pipeline.md)
 [`adn_common_priority_encoder`](https://github.com/ADN-VLSI/adn_common/blob/main/document/source/adn_common_priority_encoder.md)
 [`adn_common_ring_counter`](https://github.com/ADN-VLSI/adn_common/blob/main/document/source/adn_common_ring_counter.md)
