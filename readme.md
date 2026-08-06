@@ -41,14 +41,10 @@
 ## INTERFACE
 [`dummy_interface`](document/interface/dummy_interface.md)
 
-[`dummy_interface`](https://github.com/ADN-VLSI/adn_common/blob/main/document/interface/dummy_interface.md)
 
 ## INCLUDE
 [`adn_endec_block_linecode_functions.svh`](document/include/adn_endec_block_linecode_functions.md)
 
-[`pmi/assign.svh`](https://github.com/ADN-VLSI/adn_common/blob/main/document/include/pmi/assign.md)
-[`pmi/typedef.svh`](https://github.com/ADN-VLSI/adn_common/blob/main/document/include/pmi/typedef.md)
-[`vip/adn_common_tb_headers.sv`](https://github.com/ADN-VLSI/adn_common/blob/main/document/include/vip/adn_common_tb_headers.md)
 
 ---
 
