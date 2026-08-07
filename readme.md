@@ -48,11 +48,12 @@
 ## INCLUDE
 [`adn_endec_block_linecode_functions.svh`](document/include/adn_endec_block_linecode_functions.md)
 
+[`assertion/valid_ready.svh`](https://github.com/ADN-VLSI/adn_common/blob/main/document/include/assertion/valid_ready.md)
 [`pmi/assign.svh`](https://github.com/ADN-VLSI/adn_common/blob/main/document/include/pmi/assign.md)
 [`pmi/typedef.svh`](https://github.com/ADN-VLSI/adn_common/blob/main/document/include/pmi/typedef.md)
 [`vip/adn_common_tb_headers.sv`](https://github.com/ADN-VLSI/adn_common/blob/main/document/include/vip/adn_common_tb_headers.md)
 
 ---
 
-<span style="font-size: 1.3em; font-weight: bold;"> <a href="https://github.com/squared-studio/documenter/blob/main/README.md">Coding & Commenting Guidelines</a></span>
+<span style="font-size: 1.3em; font-weight: bold;"> <a href="./.github/SV_CODING_STD.md">Coding & Commenting Guidelines</a></span>
 
