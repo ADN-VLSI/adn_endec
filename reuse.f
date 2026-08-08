@@ -1,3 +1,4 @@
+${ADN_ENDEC}/assertion/dummy_checker.sv
 ${ADN_ENDEC}/interface/dummy_interface.sv
 ${ADN_ENDEC}/source/adn_endec_decoder_128b130b.sv
 ${ADN_ENDEC}/source/adn_endec_decoder_128b132b.sv
