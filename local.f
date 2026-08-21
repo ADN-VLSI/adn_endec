@@ -5,4 +5,7 @@ ${ADN_ENDEC}/testbench/adn_endec_256b257b_tb.sv
 ${ADN_ENDEC}/testbench/adn_endec_4b5b_tb.sv
 ${ADN_ENDEC}/testbench/adn_endec_64b66b_tb.sv
 ${ADN_ENDEC}/testbench/adn_endec_8b10b_tb.sv
+${ADN_ENDEC}/testbench/adn_endec_aes128_tb.sv
+${ADN_ENDEC}/testbench/adn_endec_aes192_tb.sv
+${ADN_ENDEC}/testbench/adn_endec_aes256_tb.sv
 ${ADN_ENDEC}/testbench/adn_endec_manchester_tb.sv
