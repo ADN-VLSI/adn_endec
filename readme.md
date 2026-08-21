@@ -7,6 +7,9 @@
 [`adn_endec_decoder_4b5b`](document/source/adn_endec_decoder_4b5b.md)
 [`adn_endec_decoder_64b66b`](document/source/adn_endec_decoder_64b66b.md)
 [`adn_endec_decoder_8b10b`](document/source/adn_endec_decoder_8b10b.md)
+[`adn_endec_decoder_aes128`](document/source/adn_endec_decoder_aes128.md)
+[`adn_endec_decoder_aes192`](document/source/adn_endec_decoder_aes192.md)
+[`adn_endec_decoder_aes256`](document/source/adn_endec_decoder_aes256.md)
 [`adn_endec_decoder_manchester`](document/source/adn_endec_decoder_manchester.md)
 [`adn_endec_encoder_128b130b`](document/source/adn_endec_encoder_128b130b.md)
 [`adn_endec_encoder_128b132b`](document/source/adn_endec_encoder_128b132b.md)
@@ -14,6 +17,9 @@
 [`adn_endec_encoder_4b5b`](document/source/adn_endec_encoder_4b5b.md)
 [`adn_endec_encoder_64b66b`](document/source/adn_endec_encoder_64b66b.md)
 [`adn_endec_encoder_8b10b`](document/source/adn_endec_encoder_8b10b.md)
+[`adn_endec_encoder_aes128`](document/source/adn_endec_encoder_aes128.md)
+[`adn_endec_encoder_aes192`](document/source/adn_endec_encoder_aes192.md)
+[`adn_endec_encoder_aes256`](document/source/adn_endec_encoder_aes256.md)
 [`adn_endec_encoder_manchester`](document/source/adn_endec_encoder_manchester.md)
 
 [`adn_common_address_decoder`](https://github.com/ADN-VLSI/adn_common/blob/main/document/source/adn_common_address_decoder.md)
@@ -54,6 +60,7 @@
 [`adn_common_pmi_if`](https://github.com/ADN-VLSI/adn_common/blob/main/document/interface/adn_common_pmi_if.md)
 
 ## INCLUDE
+[`adn_endec_aes_functions.svh`](document/include/adn_endec_aes_functions.md)
 [`adn_endec_block_linecode_functions.svh`](document/include/adn_endec_block_linecode_functions.md)
 
 [`pmi/assign.svh`](https://github.com/ADN-VLSI/adn_common/blob/main/document/include/pmi/assign.md)
