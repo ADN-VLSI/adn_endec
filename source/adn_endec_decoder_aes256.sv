@@ -26,8 +26,14 @@ module adn_endec_decoder_aes256 (
 
   `include "adn_endec_aes_functions.svh"
 
+  logic [1919:0] round_keys;
+
   always_comb begin
-    aes_decrypt_block(ciphertext_in, key_in, 8, 14, plaintext_out);
+    aes_expand_key(key_in, 8, 14, round_keys);
+  end
+
+  always_comb begin
+    aes_decrypt_block_round_keys(ciphertext_in, round_keys, 14, plaintext_out);
   end
 
 endmodule

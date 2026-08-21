@@ -27,11 +27,16 @@ module adn_endec_encoder_aes192 (
   `include "adn_endec_aes_functions.svh"
 
   logic [255:0] key_ext;
+  logic [1919:0] round_keys;
 
   always_comb begin
     key_ext = 256'h0;
     key_ext[255-:192] = key_in;
-    aes_encrypt_block(plaintext_in, key_ext, 6, 12, ciphertext_out);
+    aes_expand_key(key_ext, 6, 12, round_keys);
+  end
+
+  always_comb begin
+    aes_encrypt_block_round_keys(plaintext_in, round_keys, 12, ciphertext_out);
   end
 
 endmodule

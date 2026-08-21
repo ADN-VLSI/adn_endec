@@ -1,5 +1,5 @@
 function automatic logic [7:0] aes_sbox(input logic [7:0] byte_in);
-  case (byte_in)
+  unique case (byte_in)
     8'h00: return 8'h63; 8'h01: return 8'h7C; 8'h02: return 8'h77; 8'h03: return 8'h7B;
     8'h04: return 8'hF2; 8'h05: return 8'h6B; 8'h06: return 8'h6F; 8'h07: return 8'hC5;
     8'h08: return 8'h30; 8'h09: return 8'h01; 8'h0A: return 8'h67; 8'h0B: return 8'h2B;
@@ -64,11 +64,12 @@ function automatic logic [7:0] aes_sbox(input logic [7:0] byte_in);
     8'hF4: return 8'hBF; 8'hF5: return 8'hE6; 8'hF6: return 8'h42; 8'hF7: return 8'h68;
     8'hF8: return 8'h41; 8'hF9: return 8'h99; 8'hFA: return 8'h2D; 8'hFB: return 8'h0F;
     8'hFC: return 8'hB0; 8'hFD: return 8'h54; 8'hFE: return 8'hBB; 8'hFF: return 8'h16;
+    default: return 8'h00;
   endcase
 endfunction
 
 function automatic logic [7:0] aes_inv_sbox(input logic [7:0] byte_in);
-  case (byte_in)
+  unique case (byte_in)
     8'h00: return 8'h52; 8'h01: return 8'h09; 8'h02: return 8'h6A; 8'h03: return 8'hD5;
     8'h04: return 8'h30; 8'h05: return 8'h36; 8'h06: return 8'hA5; 8'h07: return 8'h38;
     8'h08: return 8'hBF; 8'h09: return 8'h40; 8'h0A: return 8'hA3; 8'h0B: return 8'h9E;
@@ -133,11 +134,44 @@ function automatic logic [7:0] aes_inv_sbox(input logic [7:0] byte_in);
     8'hF4: return 8'hBA; 8'hF5: return 8'h77; 8'hF6: return 8'hD6; 8'hF7: return 8'h26;
     8'hF8: return 8'hE1; 8'hF9: return 8'h69; 8'hFA: return 8'h14; 8'hFB: return 8'h63;
     8'hFC: return 8'h55; 8'hFD: return 8'h21; 8'hFE: return 8'h0C; 8'hFF: return 8'h7D;
+    default: return 8'h00;
   endcase
 endfunction
 
 function automatic logic [7:0] aes_xtime(input logic [7:0] byte_in);
   return {byte_in[6:0], 1'b0} ^ (byte_in[7] ? 8'h1B : 8'h00);
+endfunction
+
+function automatic logic [7:0] aes_mul2(input logic [7:0] byte_in);
+  return aes_xtime(byte_in);
+endfunction
+
+function automatic logic [7:0] aes_mul3(input logic [7:0] byte_in);
+  return aes_xtime(byte_in) ^ byte_in;
+endfunction
+
+function automatic logic [7:0] aes_mul4(input logic [7:0] byte_in);
+  return aes_xtime(aes_xtime(byte_in));
+endfunction
+
+function automatic logic [7:0] aes_mul8(input logic [7:0] byte_in);
+  return aes_xtime(aes_xtime(aes_xtime(byte_in)));
+endfunction
+
+function automatic logic [7:0] aes_mul9(input logic [7:0] byte_in);
+  return aes_mul8(byte_in) ^ byte_in;
+endfunction
+
+function automatic logic [7:0] aes_mul11(input logic [7:0] byte_in);
+  return aes_mul8(byte_in) ^ aes_mul2(byte_in) ^ byte_in;
+endfunction
+
+function automatic logic [7:0] aes_mul13(input logic [7:0] byte_in);
+  return aes_mul8(byte_in) ^ aes_mul4(byte_in) ^ byte_in;
+endfunction
+
+function automatic logic [7:0] aes_mul14(input logic [7:0] byte_in);
+  return aes_mul8(byte_in) ^ aes_mul4(byte_in) ^ aes_mul2(byte_in);
 endfunction
 
 function automatic logic [7:0] aes_gf_mul(input logic [7:0] a, input logic [7:0] b);
@@ -190,7 +224,7 @@ function automatic logic [31:0] aes_sub_word(input logic [31:0] word_in);
 endfunction
 
 function automatic logic [31:0] aes_rcon(input int index);
-  case (index)
+  unique case (index)
     1: return 32'h01000000;
     2: return 32'h02000000;
     3: return 32'h04000000;
@@ -216,10 +250,12 @@ endfunction
 function automatic logic [127:0] aes_sub_bytes(input logic [127:0] state_in);
   logic [127:0] state_out;
   int idx;
+  int msb;
   begin
-    state_out = state_in;
+    state_out = 128'h0;
     for (idx = 0; idx < 16; idx = idx + 1) begin
-      state_out = aes_set_state_byte(state_out, idx, aes_sbox(aes_get_state_byte(state_out, idx)));
+      msb = 127 - (idx * 8);
+      state_out[msb-:8] = aes_sbox(state_in[msb-:8]);
     end
     return state_out;
   end
@@ -228,10 +264,12 @@ endfunction
 function automatic logic [127:0] aes_inv_sub_bytes(input logic [127:0] state_in);
   logic [127:0] state_out;
   int idx;
+  int msb;
   begin
-    state_out = state_in;
+    state_out = 128'h0;
     for (idx = 0; idx < 16; idx = idx + 1) begin
-      state_out = aes_set_state_byte(state_out, idx, aes_inv_sbox(aes_get_state_byte(state_out, idx)));
+      msb = 127 - (idx * 8);
+      state_out[msb-:8] = aes_inv_sbox(state_in[msb-:8]);
     end
     return state_out;
   end
@@ -244,14 +282,21 @@ function automatic logic [127:0] aes_shift_rows(input logic [127:0] state_in);
   int src_col;
   int src_idx;
   int dst_idx;
+  int src_msb;
+  int dst_msb;
   begin
     state_out = 128'h0;
     for (row = 0; row < 4; row = row + 1) begin
       for (col = 0; col < 4; col = col + 1) begin
-        src_col = (col + row) % 4;
+        src_col = col + row;
+        if (src_col >= 4) begin
+          src_col = src_col - 4;
+        end
         src_idx = (4 * src_col) + row;
         dst_idx = (4 * col) + row;
-        state_out = aes_set_state_byte(state_out, dst_idx, aes_get_state_byte(state_in, src_idx));
+        src_msb = 127 - (src_idx * 8);
+        dst_msb = 127 - (dst_idx * 8);
+        state_out[dst_msb-:8] = state_in[src_msb-:8];
       end
     end
     return state_out;
@@ -265,14 +310,21 @@ function automatic logic [127:0] aes_inv_shift_rows(input logic [127:0] state_in
   int src_col;
   int src_idx;
   int dst_idx;
+  int src_msb;
+  int dst_msb;
   begin
     state_out = 128'h0;
     for (row = 0; row < 4; row = row + 1) begin
       for (col = 0; col < 4; col = col + 1) begin
-        src_col = (col - row + 4) % 4;
+        src_col = col - row;
+        if (src_col < 0) begin
+          src_col = src_col + 4;
+        end
         src_idx = (4 * src_col) + row;
         dst_idx = (4 * col) + row;
-        state_out = aes_set_state_byte(state_out, dst_idx, aes_get_state_byte(state_in, src_idx));
+        src_msb = 127 - (src_idx * 8);
+        dst_msb = 127 - (dst_idx * 8);
+        state_out[dst_msb-:8] = state_in[src_msb-:8];
       end
     end
     return state_out;
@@ -286,22 +338,20 @@ function automatic logic [127:0] aes_mix_columns(input logic [127:0] state_in);
   logic [7:0] s2;
   logic [7:0] s3;
   int col;
+  int col_msb;
   begin
-    state_out = state_in;
+    state_out = 128'h0;
     for (col = 0; col < 4; col = col + 1) begin
-      s0 = aes_get_state_byte(state_in, (4 * col) + 0);
-      s1 = aes_get_state_byte(state_in, (4 * col) + 1);
-      s2 = aes_get_state_byte(state_in, (4 * col) + 2);
-      s3 = aes_get_state_byte(state_in, (4 * col) + 3);
+      col_msb = 127 - (col * 32);
+      s0 = state_in[col_msb-:8];
+      s1 = state_in[(col_msb-8)-:8];
+      s2 = state_in[(col_msb-16)-:8];
+      s3 = state_in[(col_msb-24)-:8];
 
-      state_out = aes_set_state_byte(
-          state_out, (4 * col) + 0, aes_gf_mul(s0, 8'h02) ^ aes_gf_mul(s1, 8'h03) ^ s2 ^ s3);
-      state_out = aes_set_state_byte(
-          state_out, (4 * col) + 1, s0 ^ aes_gf_mul(s1, 8'h02) ^ aes_gf_mul(s2, 8'h03) ^ s3);
-      state_out = aes_set_state_byte(
-          state_out, (4 * col) + 2, s0 ^ s1 ^ aes_gf_mul(s2, 8'h02) ^ aes_gf_mul(s3, 8'h03));
-      state_out = aes_set_state_byte(
-          state_out, (4 * col) + 3, aes_gf_mul(s0, 8'h03) ^ s1 ^ s2 ^ aes_gf_mul(s3, 8'h02));
+      state_out[col_msb-:8] = aes_mul2(s0) ^ aes_mul3(s1) ^ s2 ^ s3;
+      state_out[(col_msb-8)-:8] = s0 ^ aes_mul2(s1) ^ aes_mul3(s2) ^ s3;
+      state_out[(col_msb-16)-:8] = s0 ^ s1 ^ aes_mul2(s2) ^ aes_mul3(s3);
+      state_out[(col_msb-24)-:8] = aes_mul3(s0) ^ s1 ^ s2 ^ aes_mul2(s3);
     end
     return state_out;
   end
@@ -314,26 +364,20 @@ function automatic logic [127:0] aes_inv_mix_columns(input logic [127:0] state_i
   logic [7:0] s2;
   logic [7:0] s3;
   int col;
+  int col_msb;
   begin
-    state_out = state_in;
+    state_out = 128'h0;
     for (col = 0; col < 4; col = col + 1) begin
-      s0 = aes_get_state_byte(state_in, (4 * col) + 0);
-      s1 = aes_get_state_byte(state_in, (4 * col) + 1);
-      s2 = aes_get_state_byte(state_in, (4 * col) + 2);
-      s3 = aes_get_state_byte(state_in, (4 * col) + 3);
+      col_msb = 127 - (col * 32);
+      s0 = state_in[col_msb-:8];
+      s1 = state_in[(col_msb-8)-:8];
+      s2 = state_in[(col_msb-16)-:8];
+      s3 = state_in[(col_msb-24)-:8];
 
-      state_out = aes_set_state_byte(state_out, (4 * col) + 0,
-                                     aes_gf_mul(s0, 8'h0E) ^ aes_gf_mul(s1, 8'h0B) ^
-                                     aes_gf_mul(s2, 8'h0D) ^ aes_gf_mul(s3, 8'h09));
-      state_out = aes_set_state_byte(state_out, (4 * col) + 1,
-                                     aes_gf_mul(s0, 8'h09) ^ aes_gf_mul(s1, 8'h0E) ^
-                                     aes_gf_mul(s2, 8'h0B) ^ aes_gf_mul(s3, 8'h0D));
-      state_out = aes_set_state_byte(state_out, (4 * col) + 2,
-                                     aes_gf_mul(s0, 8'h0D) ^ aes_gf_mul(s1, 8'h09) ^
-                                     aes_gf_mul(s2, 8'h0E) ^ aes_gf_mul(s3, 8'h0B));
-      state_out = aes_set_state_byte(state_out, (4 * col) + 3,
-                                     aes_gf_mul(s0, 8'h0B) ^ aes_gf_mul(s1, 8'h0D) ^
-                                     aes_gf_mul(s2, 8'h09) ^ aes_gf_mul(s3, 8'h0E));
+      state_out[col_msb-:8] = aes_mul14(s0) ^ aes_mul11(s1) ^ aes_mul13(s2) ^ aes_mul9(s3);
+      state_out[(col_msb-8)-:8] = aes_mul9(s0) ^ aes_mul14(s1) ^ aes_mul11(s2) ^ aes_mul13(s3);
+      state_out[(col_msb-16)-:8] = aes_mul13(s0) ^ aes_mul9(s1) ^ aes_mul14(s2) ^ aes_mul11(s3);
+      state_out[(col_msb-24)-:8] = aes_mul11(s0) ^ aes_mul13(s1) ^ aes_mul9(s2) ^ aes_mul14(s3);
     end
     return state_out;
   end
@@ -368,14 +412,12 @@ task automatic aes_expand_key(input logic [255:0] key_in, input int nk, input in
   end
 endtask
 
-task automatic aes_encrypt_block(input logic [127:0] plaintext_in, input logic [255:0] key_in,
-                                 input int nk, input int nr, output logic [127:0] ciphertext_out);
-  logic [1919:0] round_keys;
+task automatic aes_encrypt_block_round_keys(input logic [127:0] plaintext_in,
+                                            input logic [1919:0] round_keys, input int nr,
+                                            output logic [127:0] ciphertext_out);
   logic [127:0] state;
   int round;
   begin
-    aes_expand_key(key_in, nk, nr, round_keys);
-
     state = plaintext_in ^ aes_round_key(round_keys, 0);
     for (round = 1; round < nr; round = round + 1) begin
       state = aes_sub_bytes(state);
@@ -390,14 +432,12 @@ task automatic aes_encrypt_block(input logic [127:0] plaintext_in, input logic [
   end
 endtask
 
-task automatic aes_decrypt_block(input logic [127:0] ciphertext_in, input logic [255:0] key_in,
-                                 input int nk, input int nr, output logic [127:0] plaintext_out);
-  logic [1919:0] round_keys;
+task automatic aes_decrypt_block_round_keys(input logic [127:0] ciphertext_in,
+                                            input logic [1919:0] round_keys, input int nr,
+                                            output logic [127:0] plaintext_out);
   logic [127:0] state;
   int round;
   begin
-    aes_expand_key(key_in, nk, nr, round_keys);
-
     state = ciphertext_in ^ aes_round_key(round_keys, nr);
     for (round = nr - 1; round > 0; round = round - 1) begin
       state = aes_inv_shift_rows(state);
@@ -409,5 +449,23 @@ task automatic aes_decrypt_block(input logic [127:0] ciphertext_in, input logic 
     state = aes_inv_sub_bytes(state);
     state = state ^ aes_round_key(round_keys, 0);
     plaintext_out = state;
+  end
+endtask
+
+task automatic aes_encrypt_block(input logic [127:0] plaintext_in, input logic [255:0] key_in,
+                                 input int nk, input int nr, output logic [127:0] ciphertext_out);
+  logic [1919:0] round_keys;
+  begin
+    aes_expand_key(key_in, nk, nr, round_keys);
+    aes_encrypt_block_round_keys(plaintext_in, round_keys, nr, ciphertext_out);
+  end
+endtask
+
+task automatic aes_decrypt_block(input logic [127:0] ciphertext_in, input logic [255:0] key_in,
+                                 input int nk, input int nr, output logic [127:0] plaintext_out);
+  logic [1919:0] round_keys;
+  begin
+    aes_expand_key(key_in, nk, nr, round_keys);
+    aes_decrypt_block_round_keys(ciphertext_in, round_keys, nr, plaintext_out);
   end
 endtask
