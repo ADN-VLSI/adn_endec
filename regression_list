@@ -5,3 +5,6 @@ ci_simulate adn_endec_128b130b_tb default 0
 ci_simulate adn_endec_128b132b_tb default 0
 ci_simulate adn_endec_256b257b_tb default 0
 ci_simulate adn_endec_manchester_tb default 0
+ci_simulate adn_endec_aes128_tb default 0
+ci_simulate adn_endec_aes192_tb default 0
+ci_simulate adn_endec_aes256_tb default 0
